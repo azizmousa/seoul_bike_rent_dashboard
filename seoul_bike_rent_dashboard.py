@@ -212,7 +212,7 @@ def build_scatter_plot():
                          {'label': 'solar radiation', 'value': 'Solar Radiation (MJ/m2)'},
                          {'label':'Humidity', 'value': 'Humidity(%)'},
                          {'label': 'windSpeed', 'value': 'Wind speed (m/s)'},
-                         {'label': 'Temperature', 'value': 'Temperature(�C)'},
+                         {'label': 'Temperature', 'value': 'Temperature(C)'},
                          {'label': 'Rainfall', 'value': 'Rainfall(mm)'},
                          {'label': 'Visibility (10m)', 'value': 'Visibility (10m)'},
                          {'label': 'Number of bikes', 'value': 'Rented Bike Count'}
