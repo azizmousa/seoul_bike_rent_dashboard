@@ -18,6 +18,9 @@ import plotly.express as px
 from dash.dependencies import Input,Output,State
 import datetime as dt
 
+# Load data
+df = pd.read_csv('data/bikes.csv', parse_dates=True)
+
 
 def add_day_month_year(df):
     df['Date'] = pd.to_datetime(df['Date'], 
@@ -37,9 +40,9 @@ def draw_scatter(input_default):
 
 
 def draw_hist(input_default):
-    seasons_df=df2.groupby(input_default,as_index=False)['y'].sum()
+    seasons_df=df2.groupby(input_default,as_index=False)['Rented Bike Count'].sum()
     # print(seasons_df.head())
-    hist = px.histogram(seasons_df,x=input_default,y='y', 
+    hist = px.histogram(seasons_df,x=input_default,y='Rented Bike Count', 
                         color=input_default, barmode='group',
                         title='Number of bikes rented ',template='plotly_dark' )
     hist.update_layout(yaxis_title_text='Sum Of Rent Count')
@@ -47,17 +50,17 @@ def draw_hist(input_default):
 
 
 def seasons_pie_fig(data):
-    seasons_df=data.groupby('Seasons',as_index=False)['y'].sum()
+    seasons_df=data.groupby('Seasons',as_index=False)['Rented Bike Count'].sum()
     # print(seasons_df.head())
-    fig = px.pie(seasons_df, values='y', names='Seasons', 
+    fig = px.pie(seasons_df, values='Rented Bike Count', names='Seasons', 
                   template='plotly_dark',
                   title='')
     return fig
 
 def day_trend_fig(data):
-    trend_df=data.groupby(['weekday_name', 'Hour'],as_index=False)['y'].mean()
+    trend_df=data.groupby(['weekday_name', 'Hour'],as_index=False)['Rented Bike Count'].mean()
     # print(seasons_df.head())
-    fig = px.line(trend_df, x="Hour", y='y', 
+    fig = px.line(trend_df, x="Hour", y='Rented Bike Count', 
                   color="weekday_name",
                   title='',
                   template='plotly_dark' ,markers=True)
@@ -65,21 +68,19 @@ def day_trend_fig(data):
     return fig
 
 def rent_per_day_fig(data):
-    dd = data.groupby('Date',as_index=False)['y'].sum()
-    fig = px.line(dd, x="Date", y='y', 
+    dd = data.groupby('Date',as_index=False)['Rented Bike Count'].sum()
+    fig = px.line(dd, x="Date", y='Rented Bike Count', 
                   title='',
                   template='plotly_dark')
     fig.update_layout(yaxis_title_text='Sum Of Rent Count')
     return fig
 
-# Load data
-df = pd.read_csv('data/bikes.csv', index_col=0, parse_dates=True)
 
 
 df1=add_day_month_year(df)
 df2=add_day_month_year(df)
 
-sc=draw_scatter('y')
+sc=draw_scatter('Rented Bike Count')
 hist=draw_hist('Day')
 
 # Initialize the app
@@ -214,10 +215,10 @@ def build_scatter_plot():
                          {'label': 'Temperature', 'value': 'Temperature(�C)'},
                          {'label': 'Rainfall', 'value': 'Rainfall(mm)'},
                          {'label': 'Visibility (10m)', 'value': 'Visibility (10m)'},
-                         {'label': 'Number of bikes', 'value': 'y'}
+                         {'label': 'Number of bikes', 'value': 'Rented Bike Count'}
         
                          ],
-                     value='y'),
+                     value='Rented Bike Count'),
                  dcc.Graph(
                      id='Scatter',
                      figure=sc
